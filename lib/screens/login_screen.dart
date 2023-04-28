@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon/screens/home_screen.dart';
 import 'package:hackathon/screens/signup_screen.dart';
 
+import '../resources/auth_methods.dart';
 import '../utils/colors.dart';
 import '../widgets/text_field_input.dart';
 
@@ -14,6 +16,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -21,6 +24,25 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+  }
+
+  void login() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().loginUser(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+    print(res);
+    setState(() {
+      _isLoading = false;
+    });
+
+    if(res == "success"){
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    }
   }
 
   @override
@@ -56,6 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               //button login
               InkWell(
+                onTap: login,
                 child: Container(
                   child: const Text('Log in'),
                   width: double.infinity,
@@ -86,7 +109,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => SignupScreen())); 
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignupScreen()));
                     },
                     child: Container(
                       child: const Text(
