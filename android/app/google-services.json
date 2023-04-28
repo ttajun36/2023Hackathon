@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "13022585509",
+    "project_id": "hackathon-ddc90",
+    "storage_bucket": "hackathon-ddc90.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13022585509:android:231da629476be6ae5ce34c",
+        "android_client_info": {
+          "package_name": "com.example.hackathon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "13022585509-d1jrmmuarhage8eeu2ijd82dbf9vdvo8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJUjJEuXy54b9STasN3MmblSZQB_5SwJE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "13022585509-d1jrmmuarhage8eeu2ijd82dbf9vdvo8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
