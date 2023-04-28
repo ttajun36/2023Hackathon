@@ -14,6 +14,8 @@ class StorageMethods {
     //creating folder
     Reference ref =
         _storage.ref().child(childName).child(_auth.currentUser!.uid);
+    //사진을 profilepics/uid/안에 집어넣고
+    //snap을 만든 뒤, url을 리턴
     UploadTask uploadTask = ref.putData(file);
     TaskSnapshot snap = await uploadTask;
     String downloadUrl = await snap.ref.getDownloadURL();

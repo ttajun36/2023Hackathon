@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hackathon/screens/home_screen.dart';
+import 'package:hackathon/screens/dahboard_screen.dart';
 import 'package:hackathon/screens/signup_screen.dart';
 
 import '../resources/auth_methods.dart';
@@ -39,9 +39,12 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = false;
     });
 
-    if(res == "success"){
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    if (res == "success") {
+      Navigator.of(context).push(
+          //Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+        builder: (context) => const DashboardScreen(),
+      ));
     }
   }
 
@@ -80,7 +83,13 @@ class _LoginScreenState extends State<LoginScreen> {
               InkWell(
                 onTap: login,
                 child: Container(
-                  child: const Text('Log in'),
+                  child: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: primaryColor,
+                          ),
+                        )
+                      : const Text('Log in'),
                   width: double.infinity,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 12),

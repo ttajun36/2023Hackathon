@@ -1,12 +1,12 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:hackathon/screens/dahboard_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import '../resources/auth_methods.dart';
 import '../utils/colors.dart';
 import '../utils/utils.dart';
 import '../widgets/text_field_input.dart';
-import 'home_screen.dart';
 import 'login_screen.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -60,7 +60,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
     if (res == "success") {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          context, MaterialPageRoute(builder: (context) => DashboardScreen()));
     }
 
     print(res);
@@ -144,7 +144,9 @@ class _SignupScreenState extends State<SignupScreen> {
               InkWell(
                 onTap: signUpUser,
                 child: Container(
-                  child: const Text('Sign up'),
+                  child: _isLoading ? const Center(
+                    child: CircularProgressIndicator(color: primaryColor,)                  
+                  ): const Text('Sign up'),
                   width: double.infinity,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 12),

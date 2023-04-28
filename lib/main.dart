@@ -1,12 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hackathon/providers/user_provider.dart';
 import 'package:hackathon/screens/login_screen.dart';
 import 'package:hackathon/screens/signup_screen.dart';
+import 'package:provider/provider.dart';
 //import 'package:instagram_flutter/responsive/mobile_screen_layout.dart';
 //import 'package:instagram_flutter/responsive/web_screen_layout.dart';
-//import 'package:instagram_flutter/screens/login_screen.dart';
-//import 'package:instagram_flutter/utils/colors.dart';
 //import 'package:instagram_flutter/responsive/responsive_layout_screen.dart';
 
 void main() async {
@@ -33,6 +33,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => UserProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Instagram Clone',
+        home: LoginScreen(),
+      ),
+    );
+    /*
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Instagram Clone',
@@ -41,11 +54,8 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: mobileBackgroundColor,
       ),
       */
-      /* home: const ResponsiveLayout(
-        moblieScreenLayout: MoblieScreenLayout(),
-        webScreenLayout: WebScreenLayout(),
-      ), */
       home: LoginScreen(),
     );
+    */
   }
-}
+} 
