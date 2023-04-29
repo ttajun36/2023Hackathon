@@ -17,12 +17,49 @@ class _ProfileScreenState extends State<DashboardScreen> {
   // 게시글들을 올리기 위한 product
   CollectionReference product = FirebaseFirestore.instance.collection('posts');
 
+  String getMeetingDateString(DateTime meetingDate, Duration difference) {
+    if (difference.inDays == 0) {
+      return "오늘";
+    } else if (difference.inDays == 1) {
+      return "내일";
+    } else if (difference.inDays == 2) {
+      return "모레";
+    } else {
+      return "${meetingDate.month}/${meetingDate.day}";
+    }
+  }
+
+  String getMeetingTimeString(DateTime meetingDate) {
+    if (meetingDate.hour > 12) {
+      return " 오후 ${meetingDate.hour - 12}시${meetingDate.minute}분";
+    } else if (meetingDate.hour == 12) {
+      return " 오후 ${meetingDate.hour}시${meetingDate.minute}분";
+    } else {
+      return " 오전 ${meetingDate.hour}시${meetingDate.minute}분";
+    }
+  }
+
+  Future<List<String>> getCommentProfileImages(String postId) async {
+    List<String> profileImages = [];
+    QuerySnapshot commentSnapshot = await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postId)
+        .collection('comments')
+        .get();
+
+    commentSnapshot.docs.forEach((comment) {
+      profileImages.add(comment['profImage']);
+    });
+
+    return profileImages;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Cloud Firestore'),
+        title: Text('같이 해요!'),
       ),
       body: StreamBuilder(
         stream: product.snapshots(),
@@ -41,7 +78,16 @@ class _ProfileScreenState extends State<DashboardScreen> {
                     documentSnapshot['publishedDate'];
                 DateTime publishedDate = timestamp_published.toDate();
                 DateTime now = DateTime.now();
+
+                //publishedDate와 now의 Differenece
                 Duration difference = now.difference(publishedDate);
+                //약속날짜와 now의 Difference
+                Duration difference2 = now.difference(meetingDate);
+                bool isFull = false;
+                if (documentSnapshot['memberList'].length ==
+                    documentSnapshot['memberNum']) {
+                  isFull = true;
+                }
 
                 final String msg;
 
@@ -56,9 +102,6 @@ class _ProfileScreenState extends State<DashboardScreen> {
                 }
                 //이 이후 부터는 그냥 documentSnapshot으로 접근하면 됨.
 
-                double participationRate =
-                    (documentSnapshot['memberList'].length /
-                        documentSnapshot['memberNum']);
                 return GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -76,20 +119,64 @@ class _ProfileScreenState extends State<DashboardScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
+                              flex: 3,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(height: 5),
-                                  Text(
-                                    '${meetingDate.month}/${meetingDate.day}   ${meetingDate.hour}시${meetingDate.minute}분',
-                                    //'Date Published: ${DateFormat('yyyy-MM-dd hh:mm').format(documentSnapshot['date_published'].toDate())}',
-                                    style: TextStyle(fontSize: 16),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 4, horizontal: 8),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                          color: documentSnapshot['category'] ==
+                                                  '식사'
+                                              ? Colors.blue
+                                              : documentSnapshot['category'] ==
+                                                      '스터디'
+                                                  ? Colors.green
+                                                  : Colors.red,
+                                        ),
+                                        child: Text(
+                                          documentSnapshot['category'],
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(width: 3),
+                                      RichText(
+                                        text: TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: getMeetingDateString(
+                                                  meetingDate, difference2),
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.black),
+                                            ),
+                                            TextSpan(
+                                              text: getMeetingTimeString(
+                                                  meetingDate),
+                                              style: TextStyle(
+                                                  fontSize: 11,
+                                                  color: Colors.black),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   SizedBox(height: 10),
                                   Text(
                                     documentSnapshot['title'],
                                     style: TextStyle(
-                                      fontSize: 24,
+                                      fontSize: 28,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -98,23 +185,73 @@ class _ProfileScreenState extends State<DashboardScreen> {
                                     msg,
                                     //'Date Published: ${DateFormat('yyyy-MM-dd hh:mm').format(documentSnapshot['date_published'].toDate())}',
                                     style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 12,
                                         color: Colors.black.withOpacity(0.3)),
                                   ),
                                 ],
                               ),
                             ),
                             Flexible(
+                              flex: 1,
                               // fit: FlexFit.loose,
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  SizedBox(height: 100),
-                                  Text(
-                                      // 'Participation: ${(participationRate * 100).toStringAsFixed(2)}%',
-                                      // style: TextStyle(fontSize: 16),
-                                      "1/4"),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 4, horizontal: 8),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      color:
+                                          isFull ? Colors.blue : Colors.orange,
+                                    ),
+                                    child: Text(
+                                      isFull ? "모집 완료" : "모집 중",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  FutureBuilder(
+                                    future: getCommentProfileImages(
+                                        documentSnapshot['postId']),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<List<String>> snapshot) {
+                                      if (snapshot.hasData) {
+                                        List<String> profileImages =
+                                            snapshot.data!;
+                                        return SizedBox(
+                                          height: 40,
+                                          child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: profileImages.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 0.0),
+                                                child: CircleAvatar(
+                                                  backgroundImage: NetworkImage(
+                                                      profileImages[index]),
+                                                  radius: 10,
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      } else {
+                                        return CircularProgressIndicator();
+                                      }
+                                    },
+                                  ),
+                                  Text(documentSnapshot['memberList']
+                                          .length
+                                          .toString() +
+                                      "/" +
+                                      documentSnapshot['memberNum'].toString()),
                                 ],
                               ),
                             )

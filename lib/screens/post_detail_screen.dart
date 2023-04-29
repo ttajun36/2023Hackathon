@@ -132,6 +132,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                   final DocumentSnapshot commentDoc =
                                       commentSnapshot.data!.docs[index];
 
+
                                   if (commentDoc['uid'] == post['uid']) {
                                     return ListTile(
                                       leading: GestureDetector(
@@ -149,7 +150,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                           backgroundImage: NetworkImage(
                                               commentDoc['profImage']),
                                         ),
-                                      ),
+
                                       title: Row(
                                         children: [
                                           Text(commentDoc['username']),
@@ -210,6 +211,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     userProvider.getUser.username,
                     userProvider.getUser.photoUrl,
                   );
+                  print(userProvider.getUser.username);
                 },
                 child: Text("함께하기"),
                 style: ElevatedButton.styleFrom(

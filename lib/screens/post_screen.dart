@@ -17,7 +17,8 @@ class _PostScreenState extends State<PostScreen> {
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   DateTime _meetingDate = DateTime.now();
-  int? _memberNum;
+  int _memberNum=2;
+  String _selectedCategory="식사";
   bool _isLoading = false;
   final user = FirebaseAuth.instance.currentUser;
 
@@ -38,10 +39,11 @@ class _PostScreenState extends State<PostScreen> {
         title: _titleController.text,
         description: _descriptionController.text,
         meetingDate: _meetingDate,
-        memberNum: _memberNum ?? 2,
+        memberNum: _memberNum,
         uid: uid,
         username: username,
-        profImage: profImage);
+        profImage: profImage,
+        category: _selectedCategory);
 
     setState(() {
       _isLoading = false;
@@ -98,6 +100,23 @@ class _PostScreenState extends State<PostScreen> {
                     ),
                   ),
                 ),
+                DropdownButton<String>(
+                  value: _selectedCategory,
+                  items: ['스터디', '식사', '택시']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    if (newValue != null) {
+                      setState(() {
+                        _selectedCategory = newValue;
+                      });
+                    }
+                  },
+                ),
                 ElevatedButton(
                   onPressed: () {
                     Future<DateTime?> selectedDate = showDatePicker(
@@ -140,18 +159,19 @@ class _PostScreenState extends State<PostScreen> {
                 DropdownButton<int>(
                   value: _memberNum,
                   items:
-                      [2, 3, 4, 5, 6].map<DropdownMenuItem<int>>((int value) {
+                      [2, 3, 4].map<DropdownMenuItem<int>>((int value) {
                     return DropdownMenuItem<int>(
                       value: value,
                       child: Text(value.toString()),
                     );
                   }).toList(),
-                  onChanged: (int? newValue) {
-                    setState(() {
-                      _memberNum = newValue;
-                    });
-                  },
-                ),
+                  onChanged: (int ?newValue) {
+                    if (newValue != null) {
+                      setState(() {
+                        _memberNum = newValue;
+                      });
+                    }
+                  },  )                
               ],
             ),
             SizedBox(height: 16),
