@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    child: const Text("Don't have an account? I change login_screen"),
+                    child: const Text("Don't have an account?"),
                     padding: const EdgeInsets.symmetric(
                       vertical: 8,
                     ),
