@@ -1,9 +1,14 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/user_provider.dart';
+import '../resources/storage_method.dart';
+import '../utils/utils.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String uid;
@@ -15,7 +20,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  
   late Future<DocumentSnapshot> _user;
 
   @override
@@ -23,6 +27,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     _user =
         FirebaseFirestore.instance.collection('users').doc(widget.uid).get();
+  }
+
+  Future<void> _updateCoverImage(BuildContext context) async {
+    // 이미지 선택
+    Uint8List? pickedImage = await pickImage(ImageSource.gallery);
+    if (pickedImage != null) {
+      // StorageMethods 인스턴스 생성
+      StorageMethods storageMethods = StorageMethods();
+
+      // 업로드 후 다운로드 URL 받기
+      String downloadUrl = await storageMethods.uploadImageToStorage(
+          "userCoverImages", pickedImage, true);
+
+      // Firestore 업데이트
+      FirebaseFirestore.instance.collection('users').doc(widget.uid).update({
+        'userCoverImage': downloadUrl,
+      }).then((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Cover image updated successfully"),
+          ),
+        );
+      }).catchError((error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Failed to update cover image: $error"),
+          ),
+        );
+      });
+
+      setState(() {
+        _user = FirebaseFirestore.instance
+            .collection('users')
+            .doc(widget.uid)
+            .get();
+      });
+    }
   }
 
   //수정하기.
@@ -77,68 +118,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Future<void> addBook(BuildContext context) async {
-    TextEditingController bookController = TextEditingController();
+  Future<void> addProperty(BuildContext context, int status) async {
+    TextEditingController propertyController = TextEditingController();
 
     await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('책 추가하기'),
+          title: status == 0
+              ? Text('책 추가하기')
+              : status == 1
+                  ? Text('관심 분야 추가하기')
+                  : Text('좋아하는 음악 추가하기'),
           content: TextField(
-            controller: bookController,
+            controller: propertyController,
             decoration: InputDecoration(
-              labelText: '책 제목',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () async {
-                // Firestore의 'book' 배열에 새 책을 추가
-                await FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(widget.uid)
-                    .update({
-                  'book': FieldValue.arrayUnion([bookController.text])
-                });
-
-                // UI 갱신
-                setState(() {
-                  _user = FirebaseFirestore.instance
-                      .collection('users')
-                      .doc(widget.uid)
-                      .get();
-                });
-
-                Navigator.pop(context);
-              },
-              child: Text('Save'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> addInterest(BuildContext context) async {
-    TextEditingController musicController = TextEditingController();
-
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('관심 분야 추가하기'),
-          content: TextField(
-            controller: musicController,
-            decoration: InputDecoration(
-              labelText: '관심 분야',
+              labelText: status == 0
+                  ? '책 제목'
+                  : status == 1
+                      ? '관심 분야'
+                      : '좋아하는 음악',
               border: OutlineInputBorder(),
             ),
           ),
@@ -152,62 +151,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
             TextButton(
               onPressed: () async {
                 // Firestore 내에 있는 interested 배열에 추가
-                await FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(widget.uid)
-                    .update({
-                  'interested': FieldValue.arrayUnion([musicController.text])
-                });
-
-                // UI 갱신
-                setState(() {
-                  _user = FirebaseFirestore.instance
+                if (status == 0) {
+                  await FirebaseFirestore.instance
                       .collection('users')
                       .doc(widget.uid)
-                      .get();
-                });
-
-                Navigator.pop(context);
-              },
-              child: Text('Add'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> addMusic(BuildContext context) async {
-    TextEditingController musicController = TextEditingController();
-
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('좋아하는 음악 추가하기'),
-          content: TextField(
-            controller: musicController,
-            decoration: InputDecoration(
-              labelText: '좋아하는 음악',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () async {
-                // Firestore 내에 있는 interested 배열에 추가
-                await FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(widget.uid)
-                    .update({
-                  'music': FieldValue.arrayUnion([musicController.text])
-                });
+                      .update({
+                    'book': FieldValue.arrayUnion([propertyController.text])
+                  });
+                } else if (status == 1) {
+                  await FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(widget.uid)
+                      .update({
+                    'interested':
+                        FieldValue.arrayUnion([propertyController.text])
+                  });
+                } else {
+                  await FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(widget.uid)
+                      .update({
+                    'music': FieldValue.arrayUnion([propertyController.text])
+                  });
+                }
 
                 // UI 갱신
                 setState(() {
@@ -231,8 +197,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
     TextStyle sectionTitleStyle = TextStyle(
-        fontSize: 20, fontWeight: FontWeight.bold,);
-    TextStyle itemTextStyle = TextStyle(fontSize: 18,);
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+    );
+    TextStyle itemTextStyle = TextStyle(
+      fontSize: 18,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -249,7 +219,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               }
-      
+
               DocumentSnapshot user = snapshot.data!;
               // 여기에서 user 데이터를 사용하여 UI를 구성합니다.
               return Column(
@@ -264,15 +234,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Stack(
                             alignment: Alignment.center,
                             children: [
-                              Image.network(
-                                user['userCoverImage'],
-                                fit: BoxFit.cover,
-                                height: 250,
-                                width: double.infinity,
+                              InkWell(
+                                onTap: () => _updateCoverImage(context),
+                                child: Image.network(
+                                  user['userCoverImage'],
+                                  fit: BoxFit.cover,
+                                  height: 250,
+                                  width: double.infinity,
+                                ),
                               ),
                               Transform.translate(
-                                offset: Offset(
-                                    0, 40), // 이 값의 y 좌표를 조절하여 프로필 이미지를 아래로 이동시킵니다.
+                                offset: Offset(0,
+                                    40), // 이 값의 y 좌표를 조절하여 프로필 이미지를 아래로 이동시킵니다.
                                 child: Container(
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
@@ -283,7 +256,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                   child: CircleAvatar(
                                     radius: 65,
-                                    backgroundImage: NetworkImage(user['photoUrl']),
+                                    backgroundImage:
+                                        NetworkImage(user['photoUrl']),
                                   ),
                                 ),
                               ),
@@ -296,7 +270,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 TextSpan(
                                   text: user['username'],
                                   style: TextStyle(
-                                      fontSize: 24, fontWeight: FontWeight.bold),
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 TextSpan(
                                   text: ' (${user['userage'].toString()})',
@@ -360,8 +335,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           GestureDetector(
                             onTap: () async {
                               if (userProvider.getUser.uid == widget.uid) {
-                                await editUserAttribute(context, 'userDescription',
-                                    user['userDescription']);
+                                await editUserAttribute(context,
+                                    'userDescription', user['userDescription']);
                               } else {
                                 print('different');
                               }
@@ -372,7 +347,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               overflow: TextOverflow.ellipsis, // 추가된 속성
                               style: TextStyle(fontSize: 18),
                             ),
-                          ),                          
+                          ),
                           // 여기에 추가적인 UI 요소를 배치할 수 있습니다.
                         ],
                       ),
@@ -396,7 +371,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             InkWell(
                               // 이 부분을 추가합니다.
                               onTap: () {
-                                addBook(context);
+                                addProperty(context, 0);
                               },
                               child: Text(
                                 '인상 깊게 읽은 책',
@@ -415,7 +390,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ))
                               .toList(),
                         ),
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
                         Row(
                           children: [
                             Icon(
@@ -423,10 +400,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: Colors.blueGrey,
                               size: 24,
                             ),
-                            SizedBox(width:5,),
+                            SizedBox(
+                              width: 5,
+                            ),
                             InkWell(
                               onTap: () {
-                                addInterest(context);
+                                addProperty(context, 1);
                               },
                               child: Text(
                                 '관심 분야',
@@ -460,7 +439,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             InkWell(
                               onTap: () {
-                                addMusic(context);
+                                addProperty(context,2);
                               },
                               child: Text(
                                 '좋아하는 음악',
@@ -487,7 +466,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               );
               // 제목을 표시합니다.
             }
-      
+
             return CircularProgressIndicator();
           },
         ),
