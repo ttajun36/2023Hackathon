@@ -42,6 +42,11 @@ class _ProfileScreenState extends State<DashboardScreen> {
                 DateTime publishedDate = timestamp_published.toDate();
                 DateTime now = DateTime.now();
                 Duration difference = now.difference(publishedDate);
+                bool isFull = false;
+                if (documentSnapshot['memberList'].length ==
+                    documentSnapshot['memberNum']) {
+                  isFull = true;
+                }
 
                 final String msg;
 
@@ -56,9 +61,6 @@ class _ProfileScreenState extends State<DashboardScreen> {
                 }
                 //이 이후 부터는 그냥 documentSnapshot으로 접근하면 됨.
 
-                double participationRate =
-                    (documentSnapshot['memberList'].length /
-                        documentSnapshot['memberNum']);
                 return GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -76,6 +78,7 @@ class _ProfileScreenState extends State<DashboardScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
+                              flex: 3,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -87,12 +90,12 @@ class _ProfileScreenState extends State<DashboardScreen> {
                                   ),
                                   SizedBox(height: 10),
                                   Text(
-                                    documentSnapshot['title'],
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                                        documentSnapshot['title'],
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),                     
                                   SizedBox(height: 10),
                                   Text(
                                     msg,
@@ -100,21 +103,40 @@ class _ProfileScreenState extends State<DashboardScreen> {
                                     style: TextStyle(
                                         fontSize: 16,
                                         color: Colors.black.withOpacity(0.3)),
-                                  ),
+                                  ),                                  
                                 ],
                               ),
                             ),
                             Flexible(
+                              flex: 1,
                               // fit: FlexFit.loose,
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  SizedBox(height: 100),
-                                  Text(
-                                      // 'Participation: ${(participationRate * 100).toStringAsFixed(2)}%',
-                                      // style: TextStyle(fontSize: 16),
-                                      "1/4"),
+                                 Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 4, horizontal: 8),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      color:
+                                          isFull ? Colors.blue : Colors.orange,
+                                    ),
+                                    child: Text(
+                                      isFull ? "모집 완료" : "모집 중",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(documentSnapshot['memberList']
+                                          .length
+                                          .toString() +
+                                      "/" +
+                                      documentSnapshot['memberNum'].toString()),
                                 ],
                               ),
                             )
