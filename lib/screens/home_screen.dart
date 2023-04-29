@@ -6,6 +6,7 @@ import 'package:hackathon/screens/profile_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/user_provider.dart';
+import 'chatting_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -40,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
     List<Widget> pages = <Widget>[
       DashboardScreen(),
+      ChattingScreen(uid: userProvider.getUser.uid),
       ProfileScreen(uid: userProvider.getUser.uid)
     ];
 
@@ -47,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(items: [
         const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
+        const BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'chat'),
         const BottomNavigationBarItem(
             icon: Icon(Icons.account_circle), label: 'account')
       ], currentIndex: _selectedIndex, onTap: _onItemTapped),
