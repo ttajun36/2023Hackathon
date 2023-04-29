@@ -41,21 +41,9 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Instagram Clone',
+        title: '2023 Hackathon',
         home: LoginScreen(),
       ),
     );
-    /*
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Instagram Clone',
-      /*
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: mobileBackgroundColor,
-      ),
-      */
-      home: LoginScreen(),
-    );
-    */
   }
 } 

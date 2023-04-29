@@ -14,19 +14,8 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<DashboardScreen> {
+  // 게시글들을 올리기 위한 product
   CollectionReference product = FirebaseFirestore.instance.collection('posts');
-
-  @override
-  void initState() {
-    super.initState();
-    addData();
-  }
-
-  addData() async {
-    UserProvider _userProvider =
-        Provider.of<UserProvider>(context, listen: false);
-    await _userProvider.refreshUser();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,50 +34,49 @@ class _ProfileScreenState extends State<DashboardScreen> {
                 final DocumentSnapshot documentSnapshot =
                     streamSnapshot.data!.docs[index];
 
-                //이 이후 부터는 그냥 documentSnapshot으로 접근하면 됨. 
+                //이 이후 부터는 그냥 documentSnapshot으로 접근하면 됨.
 
                 double participationRate =
                     (documentSnapshot['memberList'].length /
                         documentSnapshot['memberNum']);
                 return GestureDetector(
-                  onTap: () {
+                    onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              PostDetailScreen(postId: documentSnapshot['postId']),
+                          builder: (context) => PostDetailScreen(
+                              postId: documentSnapshot['postId']),
                         ),
                       );
                     },
-                  child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          documentSnapshot['title'],
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              documentSnapshot['title'],
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Participation: ${(participationRate * 100).toStringAsFixed(2)}%',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              'date published',
+                              //'Date Published: ${DateFormat('yyyy-MM-dd hh:mm').format(documentSnapshot['date_published'].toDate())}',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 10),
-                        Text(
-                          'Participation: ${(participationRate * 100).toStringAsFixed(2)}%',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          'date published',
-                          //'Date Published: ${DateFormat('yyyy-MM-dd hh:mm').format(documentSnapshot['date_published'].toDate())}',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-                );
+                      ),
+                    ));
               },
             );
           }

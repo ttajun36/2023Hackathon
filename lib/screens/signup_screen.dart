@@ -7,6 +7,7 @@ import '../resources/auth_methods.dart';
 import '../utils/colors.dart';
 import '../utils/utils.dart';
 import '../widgets/text_field_input.dart';
+import 'home_screen.dart';
 import 'login_screen.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -19,7 +20,6 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   Uint8List? _image;
   bool _isLoading = false;
@@ -30,7 +30,6 @@ class _SignupScreenState extends State<SignupScreen> {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _bioController.dispose();
     _usernameController.dispose();
   }
 
@@ -50,7 +49,6 @@ class _SignupScreenState extends State<SignupScreen> {
       email: _emailController.text,
       password: _passwordController.text,
       username: _usernameController.text,
-      bio: _bioController.text,
       file: _image!,
     );
 
@@ -60,7 +58,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
     if (res == "success") {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => DashboardScreen()));
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
     }
 
     print(res);
@@ -128,14 +126,6 @@ class _SignupScreenState extends State<SignupScreen> {
                 textInputType: TextInputType.text,
                 textEditingController: _passwordController,
                 isPass: true,
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              TextFieldInput(
-                hintText: 'Enter your bio',
-                textInputType: TextInputType.text,
-                textEditingController: _bioController,
               ),
               const SizedBox(
                 height: 24,

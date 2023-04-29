@@ -23,15 +23,13 @@ class AuthMethods {
     required String email,
     required String password,
     required String username,
-    required String bio,
     required Uint8List file,
   }) async {
     String res = "Some error occurred";
     try {
       if (email.isNotEmpty ||
           password.isNotEmpty ||
-          username.isNotEmpty ||
-          bio.isNotEmpty) {
+          username.isNotEmpty) {
         //register user
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
@@ -45,11 +43,11 @@ class AuthMethods {
 
         //add user to data base
         //user을 data 안에 저장하는 부분
+        //이 부분이 회원가입때 만드는 부분.
         await _firestore.collection('users').doc(cred.user!.uid).set({
           'email' : email,
           'username': username,
           'uid': cred.user!.uid,
-          'bio': bio,
           'followers': [],
           'following': [],
           'photoUrl': photoUrl,

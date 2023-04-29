@@ -5,6 +5,7 @@ import 'package:hackathon/screens/signup_screen.dart';
 import '../resources/auth_methods.dart';
 import '../utils/colors.dart';
 import '../widgets/text_field_input.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -43,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.of(context).push(
           //Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-        builder: (context) => const DashboardScreen(),
+        builder: (context) => const HomeScreen(),
       ));
     }
   }
