@@ -24,6 +24,58 @@ class _ProfileScreenState extends State<ProfileScreen> {
         FirebaseFirestore.instance.collection('users').doc(widget.uid).get();
   }
 
+  //수정하기.
+  Future<void> editUserAttribute(
+      BuildContext context, String attributeName, String currentValue) async {
+    TextEditingController attributeController = TextEditingController();
+    attributeController.text = currentValue;
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('수정하기'),
+          content: TextField(
+            controller: attributeController,
+            maxLines: 5,
+            decoration: InputDecoration(
+              labelText: attributeName,
+              border: OutlineInputBorder(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                // Firestore 내에 있는 attributeName을 update
+                await FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(widget.uid)
+                    .update({attributeName: attributeController.text});
+
+                // UI 갱신
+                setState(() {
+                  _user = FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(widget.uid)
+                      .get();
+                });
+
+                Navigator.pop(context);
+              },
+              child: Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
@@ -148,57 +200,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     GestureDetector(
                       onTap: () async {
                         if (userProvider.getUser.uid == widget.uid) {
-                          TextEditingController descriptionController =
-                              TextEditingController();
-                          descriptionController.text = user['userDescription'];
-
-                          await showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text('수정하기'),
-                                content: TextField(
-                                  controller: descriptionController,
-                                  maxLines: 5,
-                                  decoration: InputDecoration(
-                                    labelText: 'Description',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () async {
-                                      // Firestore 내에 있는 user['userDescription']을 update
-                                      await FirebaseFirestore.instance
-                                          .collection('users')
-                                          .doc(widget.uid)
-                                          .update({
-                                        'userDescription':
-                                            descriptionController.text
-                                      });
-
-                                      // UI 갱신
-                                      setState(() {
-                                        _user = FirebaseFirestore.instance
-                                            .collection('users')
-                                            .doc(widget.uid)
-                                            .get();
-                                      });
-
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text('Save'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
+                          await editUserAttribute(context, 'userDescription',
+                              user['userDescription']);
                         } else {
                           print('different');
                         }
