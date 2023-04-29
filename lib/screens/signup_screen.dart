@@ -12,7 +12,7 @@ import 'login_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
-
+//////wntjrwntjrw
   @override
   State<SignupScreen> createState() => _SignupScreenState();
 }
@@ -134,9 +134,12 @@ class _SignupScreenState extends State<SignupScreen> {
               InkWell(
                 onTap: signUpUser,
                 child: Container(
-                  child: _isLoading ? const Center(
-                    child: CircularProgressIndicator(color: primaryColor,)                  
-                  ): const Text('Sign up'),
+                  child: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                          color: primaryColor,
+                        ))
+                      : const Text('Sign up'),
                   width: double.infinity,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 12),
