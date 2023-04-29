@@ -21,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     addData();
   }
+
   addData() async {
     UserProvider _userProvider =
         Provider.of<UserProvider>(context, listen: false);
@@ -37,8 +38,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
-    List<Widget> pages = <Widget>[DashboardScreen(), ProfileScreen(uid: userProvider.getUser.uid)];
-
+    List<Widget> pages = <Widget>[
+      DashboardScreen(),
+      ProfileScreen(uid: userProvider.getUser.uid)
+    ];
 
     return Scaffold(
       body: pages[_selectedIndex],
@@ -46,12 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
         const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
         const BottomNavigationBarItem(
             icon: Icon(Icons.account_circle), label: 'account')
-      ],
-      currentIndex: _selectedIndex,
-      onTap: _onItemTapped),
+      ], currentIndex: _selectedIndex, onTap: _onItemTapped),
     );
   }
 }
-
-
-

@@ -109,7 +109,13 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                   return ListTile(
                                     leading: GestureDetector(
                                       onTap: () {
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> ProfileScreen(uid: commentDoc['uid']),),);
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ProfileScreen(
+                                                uid: commentDoc['uid']),
+                                          ),
+                                        );
                                       },
                                       child: CircleAvatar(
                                         backgroundImage: NetworkImage(
@@ -141,6 +147,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     userProvider.getUser.username,
                     userProvider.getUser.photoUrl,
                   );
+                  print(userProvider.getUser.username);
                 },
                 child: Text("Attend"),
                 style: ElevatedButton.styleFrom(

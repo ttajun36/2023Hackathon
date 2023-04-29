@@ -57,6 +57,8 @@ class AuthMethods {
           'usermajor': usermajor,
           'userage': userage,
           'userID': userID,
+          'userCoverImage': "https://images.unsplash.com/photo-1682077354213-6836dcfd91a8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxODl8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
+          'userDescription': "설명을 추가해 주세요"
         });
 
         res = "success";
