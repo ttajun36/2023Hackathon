@@ -102,7 +102,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                     children: [
                                       Icon(Icons.room_outlined),
                                       Text(
-                                        '숙명여고',
+                                        post['category'],
                                         style: TextStyle(
                                           fontSize: 17,
                                         ),

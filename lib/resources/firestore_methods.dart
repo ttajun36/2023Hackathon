@@ -36,7 +36,7 @@ class FirestoreMethods {
           'uid': uid,
           'username': username,
           'profImage': profImage,
-          'chatting': "안녕하세요"
+          'chatting': "안녕하세요~"
         });
 
         await FirebaseFirestore.instance.collection('users').doc(uid).update({

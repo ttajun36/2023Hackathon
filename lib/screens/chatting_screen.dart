@@ -73,9 +73,9 @@ class _ChattingScreenState extends State<ChattingScreen> {
                       String hostImage = chatDoc['hostImage'];
 
                       return Card(
-                        margin: EdgeInsets.all(10),
+                        margin: EdgeInsets.all(3),
                         child: ListTile(
-                          contentPadding: EdgeInsets.all(10),
+                          contentPadding: EdgeInsets.all(2),
                           leading: CircleAvatar(
                             backgroundImage: NetworkImage(hostImage),
                             radius: 30,
@@ -93,12 +93,12 @@ class _ChattingScreenState extends State<ChattingScreen> {
                               SizedBox(height: 5),
                               Text(
                                 hostUser,
-                                style: TextStyle(fontSize: 16),
+                                style: TextStyle(fontSize: 14),
                               ),
                               SizedBox(height: 5),
                               Text(
                                 formattedMeetingDate,
-                                style: TextStyle(fontSize: 14),
+                                style: TextStyle(fontSize: 12),
                               ),
                             ],
                           ),
