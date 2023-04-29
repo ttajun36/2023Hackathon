@@ -21,6 +21,7 @@ class _ProfileScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Cloud Firestore'),
       ),
       body: StreamBuilder(
@@ -34,6 +35,25 @@ class _ProfileScreenState extends State<DashboardScreen> {
                 final DocumentSnapshot documentSnapshot =
                     streamSnapshot.data!.docs[index];
 
+                Timestamp timestamp_meeting = documentSnapshot['meetingDate'];
+                DateTime meetingDate = timestamp_meeting.toDate();
+                Timestamp timestamp_published =
+                    documentSnapshot['publishedDate'];
+                DateTime publishedDate = timestamp_published.toDate();
+                DateTime now = DateTime.now();
+                Duration difference = now.difference(publishedDate);
+
+                final String msg;
+
+                if (difference.inDays > 0) {
+                  msg = "${difference.inDays}" + "일 전";
+                } else if (difference.inHours > 0) {
+                  msg = "${difference.inHours}" + "시간 전";
+                } else if (difference.inMinutes > 0) {
+                  msg = "${difference.inMinutes}" + "분 전";
+                } else {
+                  msg = "${difference.inSeconds}" + "초 전";
+                }
                 //이 이후 부터는 그냥 documentSnapshot으로 접근하면 됨.
 
                 double participationRate =
@@ -59,6 +79,13 @@ class _ProfileScreenState extends State<DashboardScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  SizedBox(height: 5),
+                                  Text(
+                                    '${meetingDate.month}/${meetingDate.day}   ${meetingDate.hour}시${meetingDate.minute}분',
+                                    //'Date Published: ${DateFormat('yyyy-MM-dd hh:mm').format(documentSnapshot['date_published'].toDate())}',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  SizedBox(height: 10),
                                   Text(
                                     documentSnapshot['title'],
                                     style: TextStyle(
@@ -68,9 +95,11 @@ class _ProfileScreenState extends State<DashboardScreen> {
                                   ),
                                   SizedBox(height: 10),
                                   Text(
-                                    'date published',
+                                    msg,
                                     //'Date Published: ${DateFormat('yyyy-MM-dd hh:mm').format(documentSnapshot['date_published'].toDate())}',
-                                    style: TextStyle(fontSize: 16),
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black.withOpacity(0.3)),
                                   ),
                                 ],
                               ),
