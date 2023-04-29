@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hackathon/screens/realChat_screen.dart';
+import 'package:intl/intl.dart';
 
 class ChattingScreen extends StatefulWidget {
   final String uid;
@@ -26,7 +27,9 @@ class _ChattingScreenState extends State<ChattingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("채팅방"),
+        title: Text("Chats"),
+        backgroundColor: Colors.blueGrey,
+        elevation: 0,
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: _chattingStream,
@@ -43,7 +46,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
             return ListView.builder(
               itemCount: chattingList.length,
               itemBuilder: (context, index) {
-                String chatId = chattingList[index];
+                String chatId = chattingList[chattingList.length - index - 1];
 
                 return StreamBuilder<DocumentSnapshot>(
                   stream: FirebaseFirestore.instance
@@ -60,18 +63,55 @@ class _ChattingScreenState extends State<ChattingScreen> {
 
                       DocumentSnapshot chatDoc = chatSnapshot.data!;
                       String title = chatDoc['title'];
+                      String hostUser = chatDoc['hostUser'];
+                      Timestamp timestamp = chatDoc['meetingDate'];
+                      DateTime meetingDate = timestamp.toDate();
+                      String formattedMeetingDate =
+                          DateFormat('M월 d일 (E)', 'ko')
+                              .add_jm()
+                              .format(meetingDate);
+                      String hostImage = chatDoc['hostImage'];
 
-                      return ListTile(
-                        title: Text(title),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  RealChatScreen(chatId: chatId),
+                      return Card(
+                        margin: EdgeInsets.all(10),
+                        child: ListTile(
+                          contentPadding: EdgeInsets.all(10),
+                          leading: CircleAvatar(
+                            backgroundImage: NetworkImage(hostImage),
+                            radius: 30,
+                          ),
+                          title: Text(
+                            title,
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
                             ),
-                          );
-                        },
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 5),
+                              Text(
+                                hostUser,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                formattedMeetingDate,
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    RealChatScreen(chatId: chatId),
+                              ),
+                            );
+                          },
+                        ),
                       );
                     }
                     return CircularProgressIndicator();

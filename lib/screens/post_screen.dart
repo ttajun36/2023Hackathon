@@ -19,7 +19,7 @@ class _PostScreenState extends State<PostScreen> {
   TextEditingController _descriptionController = TextEditingController();
   DateTime _meetingDate = DateTime.now();
   int _memberNum=2;
-  String _selectedCategory="식사";
+  String _selectedCategory="2학";
   bool _isLoading = false;
   final user = FirebaseAuth.instance.currentUser;
 
@@ -103,7 +103,7 @@ class _PostScreenState extends State<PostScreen> {
                 ),
                 DropdownButton<String>(
                   value: _selectedCategory,
-                  items: ['스터디', '식사', '택시']
+                  items: ['1학', '2학','배달','외식']
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
