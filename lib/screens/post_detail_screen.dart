@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hackathon/screens/profile_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 import '../providers/user_provider.dart';
 import '../resources/firestore_methods.dart';
@@ -21,6 +23,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   @override
   void initState() {
     super.initState();
+    initializeDateFormatting('ko', null);
     _post =
         FirebaseFirestore.instance.collection('posts').doc(widget.postId).get();
   }
@@ -54,42 +57,64 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                   }
 
                   DocumentSnapshot post = snapshot.data!;
+                  Timestamp timestamp = post['meetingDate'];
+                  DateTime dateTime = timestamp.toDate();
+                  String format_meetingDate =
+                      DateFormat('M월 d일 (E)', 'ko').add_jm().format(dateTime);
                   // 여기에서 post 데이터를 사용하여 UI를 구성합니다.
 
                   // 이이후 부터는 그냥 post로 접근 가능
-                  return Center(
+                  return Container(
+                    padding: EdgeInsets.all(5),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    ProfileScreen(uid: post['uid']),
+                        Row(
+                          children: [
+                            SizedBox(width: 17),
+                            Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 30),
+                                  Text(
+                                    post['title'],
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    format_meetingDate,
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.room_outlined),
+                                      Text(
+                                        '숙명여고',
+                                        style: TextStyle(
+                                          fontSize: 17,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 16),
+                                  Text(
+                                    post['description'],
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  SizedBox(height: 20),
+                                ],
                               ),
-                            );
-                          },
-                          child: CircleAvatar(
-                            backgroundImage: NetworkImage(post['profImage']),
-                            radius: 50.0,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          post['title'],
-                          style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          post['description'],
-                          style: TextStyle(fontSize: 18),
-                          textAlign: TextAlign.center,
+                            ),
+                          ],
                         ),
                         //댓글 구현
+
                         StreamBuilder(
                           stream: FirebaseFirestore.instance
                               .collection('posts')
@@ -106,18 +131,61 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                 itemBuilder: (context, index) {
                                   final DocumentSnapshot commentDoc =
                                       commentSnapshot.data!.docs[index];
-                                  return ListTile(
-                                    leading: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> ProfileScreen(uid: commentDoc['uid']),),);
-                                      },
-                                      child: CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                            commentDoc['profImage']),
+
+                                  if (commentDoc['uid'] == post['uid']) {
+                                    return ListTile(
+                                      leading: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ProfileScreen(
+                                                      uid: commentDoc['uid']),
+                                            ),
+                                          );
+                                        },
+                                        child: CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                              commentDoc['profImage']),
+                                        ),
                                       ),
-                                    ),
-                                    title: Text(commentDoc['username']),
-                                  );
+                                      title: Row(
+                                        children: [
+                                          Text(commentDoc['username']),
+                                          Icon(Icons.star_rounded),
+                                          Text('chief',
+                                              style: TextStyle(
+                                                  color: Colors.black
+                                                      .withOpacity(0.3)))
+                                        ],
+                                      ),
+                                    );
+                                  } else {
+                                    return ListTile(
+                                      leading: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ProfileScreen(
+                                                      uid: commentDoc['uid']),
+                                            ),
+                                          );
+                                        },
+                                        child: CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                              commentDoc['profImage']),
+                                        ),
+                                      ),
+                                      title: Row(
+                                        children: [
+                                          Text(commentDoc['username']),
+                                        ],
+                                      ),
+                                    );
+                                  }
                                 },
                               );
                             }
@@ -127,13 +195,14 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       ],
                     ),
                   );
-                  ; // 제목을 표시합니다.
+                  // 제목을 표시합니다.
                 }
                 return CircularProgressIndicator();
               },
             ),
             Container(
               width: double.infinity,
+              padding: EdgeInsets.all(5),
               child: ElevatedButton(
                 onPressed: () {
                   attendPost(
@@ -142,7 +211,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     userProvider.getUser.photoUrl,
                   );
                 },
-                child: Text("Attend"),
+                child: Text("함께하기"),
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 16),
                 ),
