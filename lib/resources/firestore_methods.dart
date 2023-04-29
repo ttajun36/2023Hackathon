@@ -12,6 +12,7 @@ class FirestoreMethods {
     required String uid,
     required String username,
     required String profImage,
+    required String category,
   }) async {
     String res = "some errors occurred";
     try {
@@ -32,6 +33,7 @@ class FirestoreMethods {
           'publishedDate': DateTime.now(),
           'postId': postId,
           'profImage': profImage,
+          'category': category,
         });
 
         await postRef.collection('comments').add({
