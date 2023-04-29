@@ -15,7 +15,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<DashboardScreen> {
   // 게시글들을 올리기 위한 product
-  CollectionReference product = FirebaseFirestore.instance.collection('posts');
+  final product = FirebaseFirestore.instance.collection('posts').orderBy('publishedDate',descending: true);
 
   String getMeetingDateString(DateTime meetingDate, Duration difference) {
     if (difference.inDays == 0) {

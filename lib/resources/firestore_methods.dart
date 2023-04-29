@@ -17,10 +17,31 @@ class FirestoreMethods {
     String res = "some errors occurred";
     try {
       String postId = const Uuid().v1();
+      String chatId = const Uuid().v4();
 
       if (title.isNotEmpty || description.isNotEmpty) {
         DocumentReference postRef =
             _firebaseFirestore.collection('posts').doc(postId);
+        DocumentReference chatRef =
+            _firebaseFirestore.collection('chats').doc(chatId);
+
+        await chatRef.set({
+          'title': title,
+          'meetingDate': meetingDate,
+          'hostUser': username,
+          'hostImage': profImage,
+        });
+        await chatRef.collection('realchat').add({
+          'chatDate': DateTime.now(),
+          'uid': uid,
+          'username': username,
+          'profImage': profImage,
+          'chatting': "start"
+        });
+
+        await FirebaseFirestore.instance.collection('users').doc(uid).update({
+          'chattingList': FieldValue.arrayUnion([chatId]),
+        });
 
         await postRef.set({
           'title': title,
@@ -34,6 +55,7 @@ class FirestoreMethods {
           'postId': postId,
           'profImage': profImage,
           'category': category,
+          'chatId': chatId,
         });
 
         await postRef.collection('comments').add({
@@ -57,26 +79,25 @@ class FirestoreMethods {
       required String username,
       required String profImage,
       required String postId}) async {
-      String res = "some errors occurred";
-      try{
-          DocumentReference postRef =
-            _firebaseFirestore.collection('posts').doc(postId);
+    String res = "some errors occurred";
+    try {
+      DocumentReference postRef =
+          _firebaseFirestore.collection('posts').doc(postId);
 
-        await postRef.update({
-            'memberList': FieldValue.arrayUnion([uid]),
-          });
+      await postRef.update({
+        'memberList': FieldValue.arrayUnion([uid]),
+      });
 
-        await postRef.collection('comments').doc(uid).set({
-            'uid': uid,
-            'username': username,
-            'profImage': profImage,
-          });
+      await postRef.collection('comments').doc(uid).set({
+        'uid': uid,
+        'username': username,
+        'profImage': profImage,
+      });
 
-          res = "success";
-      } catch(err){
-        res = err.toString();
-      }
-      return res;
+      res = "success";
+    } catch (err) {
+      res = err.toString();
     }
+    return res;
   }
-
+}
