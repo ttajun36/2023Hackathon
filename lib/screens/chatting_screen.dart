@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hackathon/screens/realChat_screen.dart';
 
+import '../utils/colors.dart';
+
 class ChattingScreen extends StatefulWidget {
   final String uid;
   const ChattingScreen({required this.uid});
@@ -26,6 +28,8 @@ class _ChattingScreenState extends State<ChattingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: backgroundColor,
+        foregroundColor: Colors.black,
         title: Text("Chats"),
       ),
       body: StreamBuilder<DocumentSnapshot>(

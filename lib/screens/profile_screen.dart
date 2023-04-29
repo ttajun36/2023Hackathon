@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/user_provider.dart';
+import '../utils/colors.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String uid;
@@ -81,9 +82,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Profile'),
-      ),
       body: FutureBuilder(
         future: _user,
         builder:

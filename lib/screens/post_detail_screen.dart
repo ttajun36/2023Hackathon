@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hackathon/screens/profile_screen.dart';
+import 'package:hackathon/utils/colors.dart';
+import 'package:hackathon/utils/fontstyle.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -42,6 +44,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: backgroundColor,
+          foregroundColor: Colors.black,
           title: Text('Post Detail'),
         ),
         body: Column(
@@ -227,6 +231,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 },
                 child: Text("함께하기"),
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryColor,
                   padding: EdgeInsets.symmetric(vertical: 16),
                 ),
               ),
