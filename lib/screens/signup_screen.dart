@@ -21,6 +21,9 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _majorController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _studentIdController = TextEditingController();
   Uint8List? _image;
   bool _isLoading = false;
 
@@ -31,6 +34,9 @@ class _SignupScreenState extends State<SignupScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     _usernameController.dispose();
+    _majorController.dispose();
+    _ageController.dispose();
+    _studentIdController.dispose();
   }
 
   void selectImage() async {
@@ -50,6 +56,9 @@ class _SignupScreenState extends State<SignupScreen> {
       password: _passwordController.text,
       username: _usernameController.text,
       file: _image!,
+      usermajor: _majorController.text,
+      userage: int.parse(_ageController.text),
+      userID: int.parse(_studentIdController.text),
     );
 
     setState(() {
@@ -126,6 +135,36 @@ class _SignupScreenState extends State<SignupScreen> {
                 textInputType: TextInputType.text,
                 textEditingController: _passwordController,
                 isPass: true,
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              TextFieldInput(
+                hintText: 'Enter your major',
+                textInputType: TextInputType.text,
+                textEditingController: _majorController,
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFieldInput(
+                      hintText: 'Age',
+                      textInputType: TextInputType.number,
+                      textEditingController: _ageController,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: TextFieldInput(
+                      hintText: 'Student ID',
+                      textInputType: TextInputType.number,
+                      textEditingController: _studentIdController,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 24,

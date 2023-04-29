@@ -24,6 +24,9 @@ class AuthMethods {
     required String password,
     required String username,
     required Uint8List file,
+    required String usermajor,
+    required int userage,
+    required int userID,
   }) async {
     String res = "Some error occurred";
     try {
@@ -51,6 +54,9 @@ class AuthMethods {
           'followers': [],
           'following': [],
           'photoUrl': photoUrl,
+          'usermajor': usermajor,
+          'userage': userage,
+          'userID': userID,
         });
 
         res = "success";
