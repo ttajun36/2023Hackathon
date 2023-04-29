@@ -82,7 +82,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: Text("Profile"),
+        backgroundColor: Colors.blueGrey,
+        elevation: 0,
       ),
       body: FutureBuilder(
         future: _user,

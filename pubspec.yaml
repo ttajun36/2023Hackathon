@@ -81,13 +81,13 @@ flutter:
   fonts:
   - family: NanumSquareRound
     fonts:
-      - asset: fonts/NanumSquareRoundR.ttf
+      - asset: assets/fonts/Nanum_Square_Round/NanumSquareRoundR.ttf
         weight: 400
-      - asset: fonts/NanumSquareRoundB.ttf
+      - asset: assets/fonts/Nanum_Square_Round/NanumSquareRoundB.ttf
         weight: 700
-      - asset: fonts/NanumSquareRoundL.ttf
+      - asset: assets/fonts/Nanum_Square_Round/NanumSquareRoundL.ttf
         weight: 300
-      - asset: fonts/NanumSquareRoundEB.ttf
+      - asset: assets/fonts/Nanum_Square_Round/NanumSquareRoundEB.ttf
         weight: 800
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

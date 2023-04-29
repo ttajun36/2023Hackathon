@@ -49,9 +49,9 @@ class _HomeScreenState extends State<HomeScreen> {
       body: pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(items: [
         const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
-        const BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'chat'),
+        const BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'chats'),
         const BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle), label: 'account')
+            icon: Icon(Icons.account_circle), label: 'profile')
       ], currentIndex: _selectedIndex, onTap: _onItemTapped),
     );
   }
