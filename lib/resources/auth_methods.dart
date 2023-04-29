@@ -53,7 +53,7 @@ class AuthMethods {
           'uid': cred.user!.uid,
           'followers': [],
           'following': [],
-          'chattings': [],
+          'chattingList': [],
           'photoUrl': photoUrl,
           'usermajor': usermajor,
           'userage': userage,

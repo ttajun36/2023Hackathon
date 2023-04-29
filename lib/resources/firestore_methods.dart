@@ -84,6 +84,12 @@ class FirestoreMethods {
       DocumentReference postRef =
           _firebaseFirestore.collection('posts').doc(postId);
 
+      DocumentSnapshot postSnapshot = await postRef.get();
+      String chatId = postSnapshot['chatId'];
+      await FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'chattingList': FieldValue.arrayUnion([chatId]),
+      });
+
       await postRef.update({
         'memberList': FieldValue.arrayUnion([uid]),
       });

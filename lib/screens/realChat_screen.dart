@@ -77,14 +77,15 @@ class _RealChatScreenState extends State<RealChatScreen> {
                       String profImage = messageDoc['profImage'];
                       String messageSenderId = messageDoc['uid'];
 
-                      bool isCurrentUser = messageSenderId == userProvider.getUser.uid;
+                      bool isCurrentUser = (messageSenderId == userProvider.getUser.uid);
 
                       return Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 8.0, horizontal: 16.0),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: isCurrentUser? MainAxisAlignment.end
+                              : MainAxisAlignment.start,
                           children: isCurrentUser
                               ? [
                                   Column(
@@ -149,8 +150,8 @@ class _RealChatScreenState extends State<RealChatScreen> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {
-                    _sendMessage(_messageController.text, userProvider.getUser.uid, userProvider.getUser.username, userProvider.getUser.photoUrl );
+                  onPressed: () {            
+                    _sendMessage(_messageController.text, userProvider.getUser.uid, userProvider.getUser.username, userProvider.getUser.photoUrl, );
                   },
                   icon: Icon(Icons.send),
                 ),
