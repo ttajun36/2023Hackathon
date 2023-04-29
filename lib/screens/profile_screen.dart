@@ -40,23 +40,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [            
-                  Text(
-                    user['username'],
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                children: [
+                  CircleAvatar(
+                    // CircleAvatar를 추가합니다.
+                    radius: 65,
+                    backgroundImage: NetworkImage(user['photoUrl']),
+                  ),
+                  SizedBox(height: 20),
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: user['username'],
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text: ' (${user['userage'].toString()})',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ],
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 10),
-                  Text(
-                    user['bio'],
-                    style: TextStyle(fontSize: 18),
-                    textAlign: TextAlign.center,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [                              
+                      Text(
+                        user['usermajor'],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                       SizedBox(width: 10),
+                       Text(
+                        user['userID'].toString(),
+                        style: TextStyle(fontSize: 18),
+                      ),             
+                    ],
                   ),
                   // 여기에 추가적인 UI 요소를 배치할 수 있습니다.
                 ],
               ),
             );
-            ; // 제목을 표시합니다.
+            // 제목을 표시합니다.
           }
 
           return CircularProgressIndicator();
