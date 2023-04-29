@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 
 import '../providers/user_provider.dart';
 
-
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
@@ -53,27 +52,43 @@ class _ProfileScreenState extends State<DashboardScreen> {
                     child: Card(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              documentSnapshot['title'],
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    documentSnapshot['title'],
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    'date published',
+                                    //'Date Published: ${DateFormat('yyyy-MM-dd hh:mm').format(documentSnapshot['date_published'].toDate())}',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ],
                               ),
                             ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Participation: ${(participationRate * 100).toStringAsFixed(2)}%',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            SizedBox(height: 5),
-                            Text(
-                              'date published',
-                              //'Date Published: ${DateFormat('yyyy-MM-dd hh:mm').format(documentSnapshot['date_published'].toDate())}',
-                              style: TextStyle(fontSize: 16),
-                            ),
+                            Flexible(
+                              // fit: FlexFit.loose,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(height: 100),
+                                  Text(
+                                      // 'Participation: ${(participationRate * 100).toStringAsFixed(2)}%',
+                                      // style: TextStyle(fontSize: 16),
+                                      "1/4"),
+                                ],
+                              ),
+                            )
                           ],
                         ),
                       ),
