@@ -26,7 +26,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Chats"),
+        title: Text("채팅방"),
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: _chattingStream,
