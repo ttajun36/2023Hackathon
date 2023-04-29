@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:hackathon/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../resources/firestore_methods.dart';
+import '../utils/colors.dart';
+
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
 
@@ -13,8 +16,8 @@ class PostScreen extends StatefulWidget {
 class _PostScreenState extends State<PostScreen> {
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
-  DateTime? _selectedDate;
-  int? _selectedNumber;
+  DateTime _meetingDate = DateTime.now();
+  int? _memberNum;
   bool _isLoading = false;
   final user = FirebaseAuth.instance.currentUser;
 
@@ -27,31 +30,30 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   void post(String uid, String username, String profImage) async {
-    print(uid);
-    print(username);
-    print(profImage);
-
     setState(() {
       _isLoading = true;
     });
-    /*
-    String res = await AuthMethods().post(
-      title: _titleController.text,
-      password: _descriptionController.text,
-      username: ,
-    );
-    */
+
+    String res = await FirestoreMethods().post(
+        title: _titleController.text,
+        description: _descriptionController.text,
+        meetingDate: _meetingDate,
+        memberNum: _memberNum ?? 2,
+        uid: uid,
+        username: username,
+        profImage: profImage);
+
     setState(() {
       _isLoading = false;
     });
-    String res = "success2";
+    res = "success";
     if (res == "success") {
       Navigator.pop(context);
     }
 
     print(res);
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
@@ -69,10 +71,15 @@ class _PostScreenState extends State<PostScreen> {
                     userProvider.getUser.username,
                     userProvider.getUser.photoUrl,
                   ),
-              child: Text(
-                'Post',
-                style: TextStyle(color: Colors.white),
-              ))
+              child: _isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                      color: primaryColor,
+                    ))
+                  : Text(
+                      'Post',
+                      style: TextStyle(color: Colors.white),
+                    ))
         ],
       ),
       body: Padding(
@@ -114,7 +121,7 @@ class _PostScreenState extends State<PostScreen> {
                         ).then((time) {
                           if (time != null) {
                             setState(() {
-                              _selectedDate = DateTime(
+                              _meetingDate = DateTime(
                                 dateTime.year,
                                 dateTime.month,
                                 dateTime.day,
@@ -131,7 +138,7 @@ class _PostScreenState extends State<PostScreen> {
                 ),
                 SizedBox(width: 16),
                 DropdownButton<int>(
-                  value: _selectedNumber,
+                  value: _memberNum,
                   items:
                       [2, 3, 4, 5, 6].map<DropdownMenuItem<int>>((int value) {
                     return DropdownMenuItem<int>(
@@ -141,7 +148,7 @@ class _PostScreenState extends State<PostScreen> {
                   }).toList(),
                   onChanged: (int? newValue) {
                     setState(() {
-                      _selectedNumber = newValue;
+                      _memberNum = newValue;
                     });
                   },
                 ),

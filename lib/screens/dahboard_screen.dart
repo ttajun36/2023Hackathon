@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hackathon/screens/post_detail_screen.dart';
 import 'package:hackathon/screens/post_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -43,10 +44,23 @@ class _ProfileScreenState extends State<DashboardScreen> {
               itemBuilder: (context, index) {
                 final DocumentSnapshot documentSnapshot =
                     streamSnapshot.data!.docs[index];
+
+                //이 이후 부터는 그냥 documentSnapshot으로 접근하면 됨. 
+
                 double participationRate =
                     (documentSnapshot['memberList'].length /
-                        documentSnapshot['member']);
-                return Card(
+                        documentSnapshot['memberNum']);
+                return GestureDetector(
+                  onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              PostDetailScreen(postId: documentSnapshot['postId']),
+                        ),
+                      );
+                    },
+                  child: Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
@@ -73,6 +87,7 @@ class _ProfileScreenState extends State<DashboardScreen> {
                       ],
                     ),
                   ),
+                )
                 );
               },
             );
@@ -92,27 +107,3 @@ class _ProfileScreenState extends State<DashboardScreen> {
     );
   }
 }
-            
-          /*
-          if (streamSnapshot.hasData) {
-            return ListView.builder(
-              itemCount: streamSnapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                final DocumentSnapshot documentSnapshot =
-                    streamSnapshot.data!.docs[index];
-                return Card(
-                  child: ListTile(
-                    title: Text(documentSnapshot['title']),
-                    //subtitle: Text(documentSnapshot['username']),
-                  ),
-                );
-              },
-            );
-          }
-          return CircularProgressIndicator();
-        },
-      ),
-    );
-  }
-}
-*/
