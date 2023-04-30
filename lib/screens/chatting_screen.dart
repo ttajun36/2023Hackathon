@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:hackathon/screens/realChat_screen.dart';
 import 'package:intl/intl.dart';
 
+import '../utils/colors.dart';
+
 class ChattingScreen extends StatefulWidget {
   final String uid;
   const ChattingScreen({required this.uid});
@@ -27,6 +29,8 @@ class _ChattingScreenState extends State<ChattingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: backgroundColor,
+        foregroundColor: Colors.black,
         title: Text("Chats"),
         backgroundColor: Colors.blueGrey,
         elevation: 0,

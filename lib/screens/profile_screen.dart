@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/user_provider.dart';
+
 import '../resources/storage_method.dart';
 import '../utils/utils.dart';
 
@@ -205,6 +206,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
 
     return Scaffold(
+
       appBar: AppBar(
         title: Text("Profile"),
         backgroundColor: Colors.blueGrey,
@@ -219,6 +221,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               }
+
 
               DocumentSnapshot user = snapshot.data!;
               // 여기에서 user 데이터를 사용하여 UI를 구성합니다.
