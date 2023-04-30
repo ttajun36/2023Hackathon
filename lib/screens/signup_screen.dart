@@ -95,6 +95,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           backgroundImage: MemoryImage(_image!),
                         )
                       : const CircleAvatar(
+                          backgroundColor: Color(0xffFFFFFF),
                           radius: 64,
                           backgroundImage: NetworkImage(
                               'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwVLdSDmgrZN7TkzbHJb8dD0_7ASUQuERL2A&usqp=CAU'),
@@ -178,7 +179,11 @@ class _SignupScreenState extends State<SignupScreen> {
                           child: CircularProgressIndicator(
                           color: primaryColor,
                         ))
-                      : const Text('Sign up'),
+                      : Text(
+                          'Sign up',
+                          style:
+                              TextStyle(color: Colors.black.withOpacity(0.5)),
+                        ),
                   width: double.infinity,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 12),
@@ -188,7 +193,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           Radius.circular(4),
                         ),
                       ),
-                      color: blueColor),
+                      color: primaryColor),
                 ),
               ),
               const SizedBox(

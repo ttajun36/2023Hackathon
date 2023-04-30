@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hackathon/screens/post_detail_screen.dart';
 import 'package:hackathon/screens/post_screen.dart';
+import 'package:hackathon/utils/colors.dart';
+import 'package:hackathon/utils/fontstyle.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/user_provider.dart';
@@ -15,8 +17,9 @@ class DashboardScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<DashboardScreen> {
   // 게시글들을 올리기 위한 product
-  final product = FirebaseFirestore.instance.collection('posts').orderBy('publishedDate',descending: true);
-
+  final product = FirebaseFirestore.instance
+      .collection('posts')
+      .orderBy('publishedDate', descending: true);
   String getMeetingDateString(DateTime meetingDate, Duration difference) {
     if (difference.inDays == 0) {
       return "오늘";
@@ -59,7 +62,11 @@ class _ProfileScreenState extends State<DashboardScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('같이 해요!'),
+        backgroundColor: backgroundColor,
+        title: Text(
+          '같이 해요!',
+          style: subtitle3.copyWith(color: Colors.black),
+        ),
       ),
       body: StreamBuilder(
         stream: product.snapshots(),
@@ -133,20 +140,19 @@ class _ProfileScreenState extends State<DashboardScreen> {
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(2),
-                                          color: documentSnapshot['category'] ==
-                                                  '식사'
-                                              ? Colors.blue
-                                              : documentSnapshot['category'] ==
-                                                      '스터디'
-                                                  ? Colors.green
-                                                  : Colors.red,
                                         ),
                                         child: Text(
                                           documentSnapshot['category'],
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
+                                          style: bodyText2.copyWith(
+                                            color:
+                                                documentSnapshot['category'] ==
+                                                        '식사'
+                                                    ? Colors.red
+                                                    : documentSnapshot[
+                                                                'category'] ==
+                                                            '스터디'
+                                                        ? Colors.green
+                                                        : Colors.blue,
                                           ),
                                         ),
                                       ),
@@ -155,25 +161,25 @@ class _ProfileScreenState extends State<DashboardScreen> {
                                         text: TextSpan(
                                           children: [
                                             TextSpan(
-                                              text: getMeetingDateString(
-                                                  meetingDate, difference2),
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.black),
-                                            ),
+                                                text: getMeetingDateString(
+                                                    meetingDate, difference2),
+                                                style: bodyText2),
                                             TextSpan(
                                               text: getMeetingTimeString(
                                                   meetingDate),
-                                              style: TextStyle(
-                                                  fontSize: 11,
-                                                  color: Colors.black),
+                                              style: bodyText2,
                                             ),
                                           ],
                                         ),
                                       ),
                                     ],
                                   ),
+                                  SizedBox(height: 5),
+                                  Text(documentSnapshot['title'],
+                                      style: headline4),
                                   SizedBox(height: 10),
+
+
                                   Text(
                                     documentSnapshot['title'],
                                     style: TextStyle(
@@ -182,6 +188,7 @@ class _ProfileScreenState extends State<DashboardScreen> {
                                     ),
                                   ),
                                   SizedBox(height: 10),
+
                                   Text(
                                     msg,
                                     style: TextStyle(
@@ -199,23 +206,6 @@ class _ProfileScreenState extends State<DashboardScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 8),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4),
-                                      color:
-                                          isFull ? Colors.blue : Colors.orange,
-                                    ),
-                                    child: Text(
-                                      isFull ? "모집 완료" : "모집 중",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
                                   FutureBuilder(
                                     future: getCommentProfileImages(
                                         documentSnapshot['postId']),
@@ -248,12 +238,30 @@ class _ProfileScreenState extends State<DashboardScreen> {
                                       }
                                     },
                                   ),
-                                  Text(documentSnapshot['memberList']
-                                          .length
-                                          .toString() +
-                                      "/" +
-                                      documentSnapshot['memberNum'].toString(),
-                                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+
+                                  Row(
+                                    children: [
+                                      Text(
+                                        isFull ? "모집 완료" : "모집 중",
+                                        style: bodyText2.copyWith(
+                                          color: isFull
+                                              ? Colors.blue
+                                              : primaryColor,
+                                        ),
+                                      ),
+                                      SizedBox(width: 2),
+                                      Text(
+                                        documentSnapshot['memberList']
+                                                .length
+                                                .toString() +
+                                            "/" +
+                                            documentSnapshot['memberNum']
+                                                .toString(),
+                                        style: bodyText2,
+                                      ),
+                                    ],
+
+
                                   ),
                                 ],
                               ),
@@ -276,6 +284,7 @@ class _ProfileScreenState extends State<DashboardScreen> {
           );
         },
         child: Icon(Icons.add),
+        backgroundColor: primaryColor,
       ),
     );
   }

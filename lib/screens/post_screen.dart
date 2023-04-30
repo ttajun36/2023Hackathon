@@ -18,8 +18,11 @@ class _PostScreenState extends State<PostScreen> {
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   DateTime _meetingDate = DateTime.now();
+
+
   int _memberNum=2;
   String _selectedCategory="2학";
+
   bool _isLoading = false;
   final user = FirebaseAuth.instance.currentUser;
 
@@ -44,7 +47,7 @@ class _PostScreenState extends State<PostScreen> {
         uid: uid,
         username: username,
         profImage: profImage,
-        category: _selectedCategory);    
+        category: _selectedCategory);
 
     setState(() {
       _isLoading = false;
@@ -63,6 +66,8 @@ class _PostScreenState extends State<PostScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: backgroundColor,
+        foregroundColor: Colors.black,
         title: Text(
           'POST',
         ),
@@ -119,6 +124,8 @@ class _PostScreenState extends State<PostScreen> {
                   },
                 ),
                 ElevatedButton(
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: primaryColor),
                   onPressed: () {
                     Future<DateTime?> selectedDate = showDatePicker(
                       context: context, // context 인수전달
@@ -159,20 +166,20 @@ class _PostScreenState extends State<PostScreen> {
                 SizedBox(width: 16),
                 DropdownButton<int>(
                   value: _memberNum,
-                  items:
-                      [2, 3, 4].map<DropdownMenuItem<int>>((int value) {
+                  items: [2, 3, 4].map<DropdownMenuItem<int>>((int value) {
                     return DropdownMenuItem<int>(
                       value: value,
                       child: Text(value.toString()),
                     );
                   }).toList(),
-                  onChanged: (int ?newValue) {
+                  onChanged: (int? newValue) {
                     if (newValue != null) {
                       setState(() {
                         _memberNum = newValue;
                       });
                     }
-                  },  )                
+                  },
+                )
               ],
             ),
             SizedBox(height: 16),

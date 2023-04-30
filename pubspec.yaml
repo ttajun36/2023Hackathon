@@ -49,7 +49,18 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.
 flutter:
-
+  uses-material-design: true
+  fonts:
+  - family: NanumSquareRound
+    fonts:
+      - asset: assets/fonts/Nanum_Square_Round/NanumSquareRoundR.ttf
+        weight: 400
+      - asset: assets/fonts/Nanum_Square_Round/NanumSquareRoundB.ttf
+        weight: 700
+      - asset: assets/fonts/Nanum_Square_Round/NanumSquareRoundL.ttf
+        weight: 300
+      - asset: assets/fonts/Nanum_Square_Round/NanumSquareRoundEB.ttf
+        weight: 800
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -78,16 +89,6 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
-  fonts:
-  - family: NanumSquareRound
-    fonts:
-      - asset: assets/fonts/Nanum_Square_Round/NanumSquareRoundR.ttf
-        weight: 400
-      - asset: assets/fonts/Nanum_Square_Round/NanumSquareRoundB.ttf
-        weight: 700
-      - asset: assets/fonts/Nanum_Square_Round/NanumSquareRoundL.ttf
-        weight: 300
-      - asset: assets/fonts/Nanum_Square_Round/NanumSquareRoundEB.ttf
-        weight: 800
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

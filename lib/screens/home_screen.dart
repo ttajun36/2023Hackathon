@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:hackathon/screens/dahboard_screen.dart';
 import 'package:hackathon/screens/profile_screen.dart';
+import 'package:hackathon/utils/colors.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/user_provider.dart';
@@ -47,12 +48,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       body: pages[_selectedIndex],
+
       bottomNavigationBar: BottomNavigationBar(items: [
         const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
         const BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'chats'),
         const BottomNavigationBarItem(
             icon: Icon(Icons.account_circle), label: 'profile')
       ], currentIndex: _selectedIndex, onTap: _onItemTapped),
+
     );
   }
 }

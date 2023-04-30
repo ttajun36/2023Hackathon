@@ -87,10 +87,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: _isLoading
                       ? const Center(
                           child: CircularProgressIndicator(
-                            color: primaryColor,
+                            color: secondaryColor,
                           ),
                         )
-                      : const Text('Log in'),
+                      : Text(
+                          'Log in',
+                          style: TextStyle(
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                        ),
                   width: double.infinity,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 12),
@@ -100,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Radius.circular(4),
                         ),
                       ),
-                      color: blueColor),
+                      color: primaryColor),
                 ),
               ),
               const SizedBox(
@@ -126,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                     child: Container(
                       child: const Text(
-                        "Sign up.",
+                        "  Sign up.",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -137,6 +142,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ],
+              ),
+              SizedBox(
+                height: 10,
               )
             ],
           ),
