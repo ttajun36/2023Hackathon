@@ -110,9 +110,14 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                     ],
                                   ),
                                   SizedBox(height: 16),
-                                  Text(
-                                    post['description'],
-                                    style: TextStyle(fontSize: 18),
+                                  ConstrainedBox(
+                                    constraints: BoxConstraints(
+                                        maxWidth: 350), // 최대 너비를 설정하세요.
+                                    child: Text(
+                                      post['description'],
+                                      style: TextStyle(fontSize: 18),
+                                      softWrap: true, // 자동으로 줄 바꿈이 되도록 설정
+                                    ),
                                   ),
                                   SizedBox(height: 20),
                                 ],

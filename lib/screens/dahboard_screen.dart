@@ -15,14 +15,18 @@ class DashboardScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<DashboardScreen> {
   // 게시글들을 올리기 위한 product
-  final product = FirebaseFirestore.instance.collection('posts').orderBy('publishedDate',descending: true);
+  final product = FirebaseFirestore.instance
+      .collection('posts')
+      .orderBy('publishedDate', descending: true);
 
   String getMeetingDateString(DateTime meetingDate, Duration difference) {
     if (difference.inDays == 0) {
       return "오늘";
-    } else if (difference.inDays == 1) {
+    }
+    if (difference.inDays == 1) {
       return "내일";
-    } else if (difference.inDays == 2) {
+    }
+    if (difference.inDays == 2) {
       return "모레";
     } else {
       return "${meetingDate.month}/${meetingDate.day}";
@@ -82,7 +86,7 @@ class _ProfileScreenState extends State<DashboardScreen> {
                 //publishedDate와 now의 Differenece
                 Duration difference = now.difference(publishedDate);
                 //약속날짜와 now의 Difference
-                Duration difference2 = now.difference(meetingDate);
+                Duration difference2 = meetingDate.difference(now);
                 bool isFull = false;
                 if (documentSnapshot['memberList'].length ==
                     documentSnapshot['memberNum']) {
@@ -104,6 +108,7 @@ class _ProfileScreenState extends State<DashboardScreen> {
 
                 return GestureDetector(
                     onTap: () {
+                      print(difference2.inDays.toString());
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -113,21 +118,22 @@ class _ProfileScreenState extends State<DashboardScreen> {
                       );
                     },
                     child: Card(
-        elevation: 5, // Add elevation to the card
-        child: Padding(
-            padding: const EdgeInsets.all(12.0), // Update the padding value
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                    Expanded(
-                        flex: 3,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                                SizedBox(height: 5),
-                                Row(
+                      elevation: 5, // Add elevation to the card
+                      child: Padding(
+                        padding: const EdgeInsets.all(
+                            12.0), // Update the padding value
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 5),
+                                  Row(
                                     children: [
-                                        Container(
+                                      Container(
                                         padding: EdgeInsets.symmetric(
                                             vertical: 4, horizontal: 8),
                                         decoration: BoxDecoration(
@@ -248,12 +254,16 @@ class _ProfileScreenState extends State<DashboardScreen> {
                                       }
                                     },
                                   ),
-                                  Text(documentSnapshot['memberList']
-                                          .length
-                                          .toString() +
-                                      "/" +
-                                      documentSnapshot['memberNum'].toString(),
-                                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                  Text(
+                                    documentSnapshot['memberList']
+                                            .length
+                                            .toString() +
+                                        "/" +
+                                        documentSnapshot['memberNum']
+                                            .toString(),
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
