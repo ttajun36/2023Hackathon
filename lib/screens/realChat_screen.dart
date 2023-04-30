@@ -52,6 +52,8 @@ class _RealChatScreenState extends State<RealChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Chat Room"),
+        backgroundColor: Colors.blueGrey,
+        elevation: 0,
       ),
       body: Column(
         children: [
@@ -77,14 +79,16 @@ class _RealChatScreenState extends State<RealChatScreen> {
                       String profImage = messageDoc['profImage'];
                       String messageSenderId = messageDoc['uid'];
 
-                      bool isCurrentUser = messageSenderId == userProvider.getUser.uid;
+                      bool isCurrentUser = (messageSenderId == userProvider.getUser.uid);
 
                       return Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 8.0, horizontal: 16.0),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: isCurrentUser
+                              ? MainAxisAlignment.end
+                              : MainAxisAlignment.start,
                           children: isCurrentUser
                               ? [
                                   Column(
@@ -95,19 +99,33 @@ class _RealChatScreenState extends State<RealChatScreen> {
                                               fontSize: 12,
                                               fontWeight: FontWeight.w600)),
                                       SizedBox(height: 5),
-                                      Text(messageText,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400)),
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 8, horizontal: 12),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(12),
+                                            topRight: Radius.circular(12),
+                                            bottomLeft: Radius.circular(12),
+                                          ),
+                                          color: Colors.lightBlueAccent,
+                                        ),
+                                        child: Text(messageText,
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.white)),
+                                      ),
                                     ],
                                   ),
                                   SizedBox(width: 10),
                                   CircleAvatar(
+                                    radius: 25,
                                     backgroundImage: NetworkImage(profImage),
                                   ),
                                 ]
                               : [
                                   CircleAvatar(
+                                    radius: 25,
                                     backgroundImage: NetworkImage(profImage),
                                   ),
                                   SizedBox(width: 10),
@@ -120,10 +138,22 @@ class _RealChatScreenState extends State<RealChatScreen> {
                                               fontSize: 12,
                                               fontWeight: FontWeight.w600)),
                                       SizedBox(height: 5),
-                                      Text(messageText,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400)),
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 8, horizontal: 12),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(12),
+                                            topRight: Radius.circular(12),
+                                            bottomRight: Radius.circular(12),
+                                          ),
+                                          color: Colors.grey[200],
+                                        ),
+                                        child: Text(messageText,
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.black)),
+                                      ),
                                     ],
                                   ),
                                 ],
@@ -136,21 +166,44 @@ class _RealChatScreenState extends State<RealChatScreen> {
               },
             ),
           ),
+          SizedBox(height: 12),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  offset: Offset(0, -1),
+                ),
+              ],
+            ),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: _messageController,
                     decoration: InputDecoration(
-                      hintText: 'Enter your message',
-                    ),
+                        hintText: 'Enter your message',
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide.none),
+                        filled: true,
+                        fillColor: Colors.grey[200]),
                   ),
                 ),
                 IconButton(
                   onPressed: () {
-                    _sendMessage(_messageController.text, userProvider.getUser.uid, userProvider.getUser.username, userProvider.getUser.photoUrl );
+                    _sendMessage(
+                      _messageController.text,
+                      userProvider.getUser.uid,
+                      userProvider.getUser.username,
+                      userProvider.getUser.photoUrl,
+                    );
                   },
                   icon: Icon(Icons.send),
                 ),

@@ -36,7 +36,7 @@ class FirestoreMethods {
           'uid': uid,
           'username': username,
           'profImage': profImage,
-          'chatting': "start"
+          'chatting': "안녕하세요~"
         });
 
         await FirebaseFirestore.instance.collection('users').doc(uid).update({
@@ -83,6 +83,12 @@ class FirestoreMethods {
     try {
       DocumentReference postRef =
           _firebaseFirestore.collection('posts').doc(postId);
+
+      DocumentSnapshot postSnapshot = await postRef.get();
+      String chatId = postSnapshot['chatId'];
+      await FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'chattingList': FieldValue.arrayUnion([chatId]),
+      });
 
       await postRef.update({
         'memberList': FieldValue.arrayUnion([uid]),

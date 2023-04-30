@@ -48,18 +48,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       body: pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: primaryColor,
-          items: [
-            const BottomNavigationBarItem(
-                icon: Icon(Icons.home), label: 'home'),
-            const BottomNavigationBarItem(
-                icon: Icon(Icons.chat), label: 'chat'),
-            const BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle), label: 'account')
-          ],
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped),
+
+      bottomNavigationBar: BottomNavigationBar(items: [
+        const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
+        const BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'chats'),
+        const BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle), label: 'profile')
+      ], currentIndex: _selectedIndex, onTap: _onItemTapped),
+
     );
   }
 }

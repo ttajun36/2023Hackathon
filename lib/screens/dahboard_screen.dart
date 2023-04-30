@@ -120,20 +120,21 @@ class _ProfileScreenState extends State<DashboardScreen> {
                       );
                     },
                     child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 5),
-                                  Row(
+        elevation: 5, // Add elevation to the card
+        child: Padding(
+            padding: const EdgeInsets.all(12.0), // Update the padding value
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                    Expanded(
+                        flex: 3,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                                SizedBox(height: 5),
+                                Row(
                                     children: [
-                                      Container(
+                                        Container(
                                         padding: EdgeInsets.symmetric(
                                             vertical: 4, horizontal: 8),
                                         decoration: BoxDecoration(
@@ -155,7 +156,7 @@ class _ProfileScreenState extends State<DashboardScreen> {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(width: 3),
+                                      SizedBox(width: 6),
                                       RichText(
                                         text: TextSpan(
                                           children: [
@@ -177,20 +178,30 @@ class _ProfileScreenState extends State<DashboardScreen> {
                                   Text(documentSnapshot['title'],
                                       style: headline4),
                                   SizedBox(height: 10),
-                                  SizedBox(height: 5),
+
+
+                                  Text(
+                                    documentSnapshot['title'],
+                                    style: TextStyle(
+                                      fontSize: 24, // Update the font size
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+
                                   Text(
                                     msg,
-                                    //'Date Published: ${DateFormat('yyyy-MM-dd hh:mm').format(documentSnapshot['date_published'].toDate())}',
                                     style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.black.withOpacity(0.3)),
+                                      fontSize: 12,
+                                      color: Colors.black
+                                          .withOpacity(0.5), // Update the color
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
                             Flexible(
                               flex: 1,
-                              // fit: FlexFit.loose,
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -227,6 +238,7 @@ class _ProfileScreenState extends State<DashboardScreen> {
                                       }
                                     },
                                   ),
+
                                   Row(
                                     children: [
                                       Text(
@@ -248,6 +260,8 @@ class _ProfileScreenState extends State<DashboardScreen> {
                                         style: bodyText2,
                                       ),
                                     ],
+
+
                                   ),
                                 ],
                               ),

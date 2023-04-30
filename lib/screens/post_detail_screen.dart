@@ -41,6 +41,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
+    bool _isMember = false;
 
     return Scaffold(
         appBar: AppBar(
@@ -66,6 +67,12 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                   String format_meetingDate =
                       DateFormat('M월 d일 (E)', 'ko').add_jm().format(dateTime);
                   // 여기에서 post 데이터를 사용하여 UI를 구성합니다.
+
+                  if (post['memberList'].contains(userProvider.getUser.uid)) {
+                    _isMember = true;
+                  } else {
+                    _isMember = false;
+                  }
 
                   // 이이후 부터는 그냥 post로 접근 가능
                   return Container(
@@ -99,7 +106,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                     children: [
                                       Icon(Icons.room_outlined),
                                       Text(
-                                        '숙명여고',
+                                        post['category'],
                                         style: TextStyle(
                                           fontSize: 17,
                                         ),
@@ -223,11 +230,15 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
               padding: EdgeInsets.all(5),
               child: ElevatedButton(
                 onPressed: () {
-                  attendPost(
-                    userProvider.getUser.uid,
-                    userProvider.getUser.username,
-                    userProvider.getUser.photoUrl,
-                  );
+                  if (!_isMember) {
+                    attendPost(
+                      userProvider.getUser.uid,
+                      userProvider.getUser.username,
+                      userProvider.getUser.photoUrl,
+                    );
+                  } else {
+                    print('nope');
+                  }
                 },
                 child: Text("함께하기"),
                 style: ElevatedButton.styleFrom(
