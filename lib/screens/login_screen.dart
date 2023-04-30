@@ -105,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Radius.circular(4),
                         ),
                       ),
-                      color: primaryColor),
+                      color: greenColor),
                 ),
               ),
               const SizedBox(

@@ -66,12 +66,8 @@ class _PostScreenState extends State<PostScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: backgroundColor,
-        foregroundColor: Colors.black,
-        title: Text(
-          'POST',
-        ),
-        centerTitle: true,
+        backgroundColor: Colors.blueGrey,
+        title: Text('Post',),
         actions: <Widget>[
           TextButton(
               onPressed: () => post(
@@ -84,10 +80,17 @@ class _PostScreenState extends State<PostScreen> {
                       child: CircularProgressIndicator(
                       color: primaryColor,
                     ))
-                  : Text(
-                      'Post',
-                      style: TextStyle(color: Colors.white),
-                    ))
+                  : Container(
+                      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: greenColor,
+                      ),
+                      child: Text(
+                        'POST', style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    )
         ],
       ),
       body: Padding(
@@ -125,7 +128,7 @@ class _PostScreenState extends State<PostScreen> {
                 ),
                 ElevatedButton(
                   style:
-                      ElevatedButton.styleFrom(backgroundColor: primaryColor),
+                      ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
                   onPressed: () {
                     Future<DateTime?> selectedDate = showDatePicker(
                       context: context, // context 인수전달

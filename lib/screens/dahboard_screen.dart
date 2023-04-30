@@ -190,37 +190,40 @@ class _ProfileScreenState extends State<DashboardScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.center,
                                 children: [
-                                  FutureBuilder(
-                                    future: getCommentProfileImages(
-                                        documentSnapshot['postId']),
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot<List<String>> snapshot) {
-                                      if (snapshot.hasData) {
-                                        List<String> profileImages =
-                                            snapshot.data!;
-                                        return SizedBox(
-                                          height: 40,
-                                          child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: profileImages.length,
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              return Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 0.0),
-                                                child: CircleAvatar(
-                                                  backgroundImage: NetworkImage(
-                                                      profileImages[index]),
-                                                  radius: 11,
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        );
-                                      } else {
-                                        return CircularProgressIndicator();
-                                      }
-                                    },
+                                  Container(
+                                    padding: EdgeInsets.only(left: 15),
+                                    child: FutureBuilder(
+                                      future: getCommentProfileImages(
+                                          documentSnapshot['postId']),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<List<String>> snapshot) {
+                                        if (snapshot.hasData) {
+                                          List<String> profileImages =
+                                              snapshot.data!;
+                                          return SizedBox(
+                                            height: 40,
+                                            child: ListView.builder(
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: profileImages.length,
+                                              itemBuilder: (BuildContext context,
+                                                  int index) {
+                                                return Padding(
+                                                  padding: const EdgeInsets.only(
+                                                      right: 0.0),
+                                                  child: CircleAvatar(
+                                                    backgroundImage: NetworkImage(
+                                                        profileImages[index]),
+                                                    radius: 11,
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          );
+                                        } else {
+                                          return CircularProgressIndicator();
+                                        }
+                                      },
+                                    ),
                                   ),
                                       Container(
                                         padding: EdgeInsets.symmetric(

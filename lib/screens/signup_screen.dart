@@ -193,7 +193,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           Radius.circular(4),
                         ),
                       ),
-                      color: primaryColor),
+                      color: greenColor),
                 ),
               ),
               const SizedBox(
