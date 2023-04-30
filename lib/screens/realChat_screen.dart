@@ -51,7 +51,7 @@ class _RealChatScreenState extends State<RealChatScreen> {
     
     return Scaffold(
       appBar: AppBar(
-        title: Text("Chat Room"),
+        title: Text("Chatting Room"),
         backgroundColor: Colors.blueGrey,
         elevation: 0,
       ),

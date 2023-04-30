@@ -45,9 +45,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: backgroundColor,
-          foregroundColor: Colors.black,
-          title: Text('Post Detail'),
+          title: Text("Post"),
+          backgroundColor: Colors.blueGrey,
+          elevation: 0,
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -102,16 +102,24 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                     ),
                                   ),
                                   SizedBox(height: 8),
-                                  Row(
-                                    children: [
-                                      Icon(Icons.room_outlined),
-                                      Text(
-                                        post['category'],
-                                        style: TextStyle(
-                                          fontSize: 17,
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 4, horizontal: 8),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      color: greenColor,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.room_outlined),
+                                        Text(
+                                          post['category'],
+                                          style: TextStyle(
+                                            fontSize: 17,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                   SizedBox(height: 16),
                                   ConstrainedBox(
@@ -147,20 +155,6 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                 itemBuilder: (context, index) {
                                   final DocumentSnapshot commentDoc =
                                       commentSnapshot.data!.docs[index];
-                                  // return ListTile(
-                                  //   leading: GestureDetector(
-                                  //     onTap: () {
-                                  //       Navigator.push(
-                                  //         context,
-                                  //         MaterialPageRoute(
-                                  //           builder: (context) => ProfileScreen(
-                                  //               uid: commentDoc['uid']),
-                                  //         ),
-                                  //       );
-                                  //     },
-                                  //     child: CircleAvatar(
-                                  //       backgroundImage: NetworkImage(
-                                  //           commentDoc['profImage']),
 
                                   if (commentDoc['uid'] == post['uid']) {
                                     return ListTile(
@@ -249,6 +243,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: primaryColor,
                   padding: EdgeInsets.symmetric(vertical: 16),
+                  
                 ),
               ),
             ),

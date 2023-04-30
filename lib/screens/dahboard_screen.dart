@@ -20,7 +20,7 @@ class _ProfileScreenState extends State<DashboardScreen> {
   final product = FirebaseFirestore.instance
       .collection('posts')
       .orderBy('publishedDate', descending: true);
-      
+
   String getMeetingDateString(DateTime meetingDate, Duration difference) {
     if (difference.inDays == 0) {
       return "오늘";
@@ -64,12 +64,9 @@ class _ProfileScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: backgroundColor,
-        title: Text(
-          '같이 해요!',
-          style: subtitle3.copyWith(color: Colors.black),
-        ),
+        title: Text("Home"),
+        backgroundColor: Colors.blueGrey,
+        elevation: 0,
       ),
       body: StreamBuilder(
         stream: product.snapshots(),
@@ -132,7 +129,7 @@ class _ProfileScreenState extends State<DashboardScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
-                              flex: 3,
+                              flex: 7,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -146,54 +143,36 @@ class _ProfileScreenState extends State<DashboardScreen> {
                                           borderRadius:
                                               BorderRadius.circular(2),
                                         ),
-                                        child: Text(
-                                          documentSnapshot['category'],
-                                          style: bodyText2.copyWith(
-                                            color:
-                                                documentSnapshot['category'] ==
-                                                        '식사'
-                                                    ? Colors.red
-                                                    : documentSnapshot[
-                                                                'category'] ==
-                                                            '스터디'
-                                                        ? Colors.green
-                                                        : Colors.blue,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 4, horizontal: 8),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                            color: greenColor,
+                                          ),
+                                          child: Text(
+                                            documentSnapshot['category'],
+                                            style: bodyText2.copyWith(
+
+                                            ),
                                           ),
                                         ),
                                       ),
                                       SizedBox(width: 6),
-                                      RichText(
-                                        text: TextSpan(
-                                          children: [
-                                            TextSpan(
-                                                text: getMeetingDateString(
-                                                    meetingDate, difference2),
-                                                style: bodyText2),
-                                            TextSpan(
-                                              text: getMeetingTimeString(
-                                                  meetingDate),
-                                              style: bodyText2,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                      Text(getMeetingDateString(
+                                          meetingDate, difference2)+ getMeetingTimeString(meetingDate)),
                                     ],
                                   ),
-                                  SizedBox(height: 5),
-                                  Text(documentSnapshot['title'],
-                                      style: headline4),
                                   SizedBox(height: 10),
-
-
                                   Text(
                                     documentSnapshot['title'],
                                     style: TextStyle(
-                                      fontSize: 24, // Update the font size
+                                      fontSize: 20, // Update the font size
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   SizedBox(height: 10),
-
                                   Text(
                                     msg,
                                     style: TextStyle(
@@ -206,10 +185,10 @@ class _ProfileScreenState extends State<DashboardScreen> {
                               ),
                             ),
                             Flexible(
-                              flex: 1,
+                              flex: 3,
                               child: Column(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.center,
                                 children: [
                                   FutureBuilder(
                                     future: getCommentProfileImages(
@@ -232,7 +211,7 @@ class _ProfileScreenState extends State<DashboardScreen> {
                                                 child: CircleAvatar(
                                                   backgroundImage: NetworkImage(
                                                       profileImages[index]),
-                                                  radius: 10,
+                                                  radius: 11,
                                                 ),
                                               );
                                             },
@@ -243,31 +222,33 @@ class _ProfileScreenState extends State<DashboardScreen> {
                                       }
                                     },
                                   ),
-                                  
-
-                                  Row(
-                                    children: [
-                                      Text(
-                                        isFull ? "모집 완료" : "모집 중",
-                                        style: bodyText2.copyWith(
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 4, horizontal: 8),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
                                           color: isFull
-                                              ? Colors.blue
+                                              ? Colors.grey
                                               : primaryColor,
                                         ),
+                                        child: Text(
+                                          isFull ? "모집 완료" : "모집 중",
+                                          style: bodyText2.copyWith(
+                                            color: Colors.white,
+                                            fontSize: 15,
+                                          ),
+                                        ),
                                       ),
-                                      SizedBox(width: 2),
-                                      Text(
-                                        documentSnapshot['memberList']
-                                                .length
-                                                .toString() +
-                                            "/" +
-                                            documentSnapshot['memberNum']
-                                                .toString(),
-                                        style: bodyText2,
-                                      ),
-                                    ],
-
-
+                                      SizedBox(height: 3,),
+                                  Text("("+
+                                    documentSnapshot['memberList']
+                                            .length
+                                            .toString() +
+                                        "/" +
+                                        documentSnapshot['memberNum']
+                                            .toString()+")",
+                                    style: TextStyle(fontSize: 13),
                                   ),
                                 ],
                               ),
@@ -290,7 +271,7 @@ class _ProfileScreenState extends State<DashboardScreen> {
           );
         },
         child: Icon(Icons.add),
-        backgroundColor: primaryColor,
+        backgroundColor: blueColor,
       ),
     );
   }

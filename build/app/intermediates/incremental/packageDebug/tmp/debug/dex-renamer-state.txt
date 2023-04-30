@@ -1,4 +1,4 @@
-#Sun Apr 30 04:56:51 KST 2023
+#Sun Apr 30 10:53:35 KST 2023
 base.2=C\:\\Users\\user\\Desktop\\hackathon\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes3.dex
 path.2=classes3.dex
 base.1=C\:\\Users\\user\\Desktop\\hackathon\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes2.dex
