@@ -99,21 +99,26 @@ class _RealChatScreenState extends State<RealChatScreen> {
                                               fontSize: 12,
                                               fontWeight: FontWeight.w600)),
                                       SizedBox(height: 5),
-                                      Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 8, horizontal: 12),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(12),
-                                            topRight: Radius.circular(12),
-                                            bottomLeft: Radius.circular(12),
+                                      ConstrainedBox(
+                                        constraints:
+                                            BoxConstraints(maxWidth: 300),
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 8, horizontal: 12),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(12),
+                                              topRight: Radius.circular(12),
+                                              bottomLeft: Radius.circular(12),
+                                            ),
+                                            color: Colors.lightBlueAccent,
                                           ),
-                                          color: Colors.lightBlueAccent,
+                                          child: Text(messageText,
+                                              softWrap: true,
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.white)),
                                         ),
-                                        child: Text(messageText,
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.white)),
                                       ),
                                     ],
                                   ),
@@ -138,21 +143,26 @@ class _RealChatScreenState extends State<RealChatScreen> {
                                               fontSize: 12,
                                               fontWeight: FontWeight.w600)),
                                       SizedBox(height: 5),
-                                      Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 8, horizontal: 12),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(12),
-                                            topRight: Radius.circular(12),
-                                            bottomRight: Radius.circular(12),
+                                      ConstrainedBox(
+                                        constraints:
+                                            BoxConstraints(maxWidth: 300),
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 8, horizontal: 12),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(12),
+                                              topRight: Radius.circular(12),
+                                              bottomRight: Radius.circular(12),
+                                            ),
+                                            color: Colors.grey[200],
                                           ),
-                                          color: Colors.grey[200],
+                                          child: Text(messageText,
+                                              softWrap: true,
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.black)),
                                         ),
-                                        child: Text(messageText,
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.black)),
                                       ),
                                     ],
                                   ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hackathon/providers/user_provider.dart';
 import 'package:hackathon/screens/login_screen.dart';
 import 'package:hackathon/screens/signup_screen.dart';
+import 'package:intl/date_symbol_data_file.dart';
 import 'package:provider/provider.dart';
 //import 'package:instagram_flutter/responsive/mobile_screen_layout.dart';
 //import 'package:instagram_flutter/responsive/web_screen_layout.dart';
@@ -11,6 +12,7 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   if (kIsWeb) {
     await Firebase.initializeApp(
       options: FirebaseOptions(
