@@ -11,8 +11,9 @@ Flutter, Firebase 사용.
 ## 주요 기능
 #### 로그인, 회원가입
 -Firebase authentication 기능 사용
-[https://user-images.githubusercontent.com/31652115/248213470-2f35a72e-d2a6-44ce-bd4b-57f6063df775.PNG]
-
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/31652115/248213470-2f35a72e-d2a6-44ce-bd4b-57f6063df775.PNG">
+</p>
 #### 게시판
 
 #### 채팅방
